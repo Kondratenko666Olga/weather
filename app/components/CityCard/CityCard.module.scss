@@ -1,0 +1,91 @@
+/* components/CityCard.module.scss */
+
+@mixin button-base($bg-color) {
+  padding: 8px 16px;
+  font-size: 0.875rem; // 14px
+  font-weight: 500;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+  color: white;
+  border: none;
+}
+
+.card {
+  background-color: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  border-top: 4px solid #3b82f6; // blue-500
+
+  &:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.cardInfo {
+  flex-grow: 1;
+  cursor: pointer;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 1.5rem; // 24px
+  font-weight: 600;
+}
+
+.icon {
+  width: 64px;
+  height: 64px;
+  margin-top: -16px;
+}
+
+.temp {
+  font-size: 3rem; // 48px
+  font-weight: 300;
+  margin-bottom: 4px;
+}
+
+.description {
+  color: #4b5563; // gray-600
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+}
+
+.updateTime {
+  font-size: 0.75rem; // 12px
+  color: #9ca3af; // gray-400
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb; // gray-200
+}
+
+.refreshBtn {
+  @include button-base(#10b981); // green-500
+
+  &:hover {
+    background-color: #059669; // green-600
+  }
+}
+
+.removeBtn {
+  @include button-base(#ef4444); // red-500
+
+  &:hover {
+    background-color: #dc2626; // red-600
+  }
+}

@@ -1,0 +1,24 @@
+/* components/WeatherApp.module.scss */
+
+.headerTitle {
+  font-size: 2.25rem; // h1
+  font-weight: 800; // extrabold
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #1f2937;
+}
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.loading,
+.emptyListMessage {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.25rem;
+  color: #6b7280;
+  padding: 2rem;
+}

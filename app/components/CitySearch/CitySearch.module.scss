@@ -1,0 +1,48 @@
+/* components/CitySearch.module.scss */
+
+.searchForm {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  background-color: #eff6ff; // blue-50
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.inputField {
+  flex-grow: 1;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+
+  &:focus {
+    outline: none;
+    border-color: #3b82f6; // blue-500
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+  }
+}
+
+.submitButton {
+  padding: 12px 24px;
+  background-color: #2563eb; // blue-600
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  border: none;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: #1d4ed8; // blue-700
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
