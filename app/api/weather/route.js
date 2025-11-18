@@ -34,6 +34,7 @@ export async function GET(request) {
   } catch (error) {
     console.error('Error receiving weather:', error);
     return NextResponse.json(
+      { coord: data.coord },
       { message: 'Internal server error' },
       { status: 500 }
     );

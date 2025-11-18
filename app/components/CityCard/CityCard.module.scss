@@ -10,7 +10,9 @@
   display: flex;
   flex-direction: column;
   border-top: 4px solid #3b82f6;
-  margin: 0 10px;
+  margin: 0 auto;
+  max-width: 60%;
+  width: 100%;
 
   &:hover {
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
@@ -79,5 +81,73 @@
   &:hover {
     background-color: #dc2626;
     color: #fff;
+  }
+}
+
+// DetailedView modal styles
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.75); // bg-black bg-opacity-75
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem; // p-4
+  z-index: 50;
+}
+
+.modalContent {
+  background-color: white; // bg-white
+  padding: 2rem; // p-8
+  border-radius: 12px; // rounded-xl
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04); // shadow-2xl
+  width: 100%; // w-full
+  max-width: 512px; // max-w-lg
+}
+
+.modalTitle {
+  font-size: 1.875rem; // text-3xl
+  font-weight: 700; // font-bold
+  margin-bottom: 1rem; // mb-4
+  color: #1d4ed8; // text-blue-700
+}
+
+.modalTempSummary {
+  font-size: 1.25rem; // text-xl
+  margin-bottom: 1rem; // mb-4
+}
+
+.modalDetails {
+  & > p {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: #4b5563; // text-gray-700
+  }
+}
+
+.modalUpdatedTime {
+  margin-top: 1.5rem; // mt-6
+  font-size: 0.875rem; // text-sm
+  color: #6b7280; // text-gray-500
+}
+
+.modalCloseButton {
+  margin-top: 1.5rem; // mt-6
+  padding: 10px 20px; // px-5 py-2
+  background-color: #3d6cd2; // bg-blue-600
+  color: white; // text-white
+  font-weight: 500; // font-medium
+  border-radius: 8px; // rounded-lg
+  transition: background-color 0.15s ease-in-out; // transition
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #1d4ed8; // hover:bg-blue-700
   }
 }

@@ -5,15 +5,15 @@ import { useState } from 'react';
 import styles from './CityCard.module.scss';
 
 const DetailedView = ({ data, onClose }) => (
-  <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
-    <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg animate-fade-in">
-      <h3 className="text-3xl font-bold mb-4 text-blue-700">
+  <div className={styles.modalOverlay}>
+    <div className={styles.modalContent}>
+      <h3 className={styles.modalTitle}>
         {data.name} (Detailed weather forecast)
       </h3>
-      <p className="text-xl mb-4">
+      <p className={styles.modalTempSummary}>
         🌡️ {data.fullData.main.temp}°C | {data.description}
       </p>
-      <div className="space-y-2 text-gray-700">
+      <div className={styles.modalDetails}>
         <p>
           <strong>Feels like:</strong> {data.fullData.main.feels_like}°C
         </p>
@@ -31,11 +31,8 @@ const DetailedView = ({ data, onClose }) => (
           <strong>Wind speed:</strong> {data.fullData.wind.speed} m/s
         </p>
       </div>
-      <p className="mt-6 text-sm text-gray-500">Updated: {data.updatedAt}</p>
-      <button
-        onClick={onClose}
-        className="mt-6 px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
-      >
+      <p className={styles.modalUpdatedTime}>Updated: {data.updatedAt}</p>
+      <button onClick={onClose} className={styles.modalCloseButton}>
         Close
       </button>
     </div>

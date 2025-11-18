@@ -72,7 +72,7 @@ export function CitySearch({ onAddCity }) {
           type="text"
           value={cityInput}
           onChange={(e) => setCityInput(e.target.value)}
-          placeholder="Enter the name of the city (minimum 3 characters)"
+          placeholder="Enter the city (min. 3 symbols)"
           className={styles.inputField}
           disabled={isAdding}
           autoComplete="off" // disabling browser autocomplete
