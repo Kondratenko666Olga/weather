@@ -1,4 +1,3 @@
-// components/WeatherApp.jsx
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
@@ -7,7 +6,7 @@ import { CityCard } from '../CityCard/CityCard';
 import { CitySearch } from '../CitySearch/CitySearch';
 import styles from './WeatherApp.module.scss';
 
-// Допоміжна функція для запиту через ваш Next.js API Route
+// Helper function for querying via Next.js API Route
 async function fetchWeather(cityName) {
   const res = await fetch(`/api/weather?city=${cityName}`);
   const data = await res.json();
@@ -22,9 +21,7 @@ async function fetchWeather(cityName) {
       fullData: data,
     };
   } else {
-    throw new Error(
-      data.message || `Не вдалося отримати погоду для ${cityName}`
-    );
+    throw new Error(data.message || `Failed to get weather for ${cityName}`);
   }
 }
 
@@ -36,11 +33,11 @@ export function WeatherApp() {
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(cityNames.length > 0);
 
-  // 1. Логіка оновлення всіх міст (винесена для чистого виклику)
+  // 1. Logic for updating all cities ( provided for a clean call)
   const updateAllWeather = useCallback(async (names) => {
     const promises = names.map((name) =>
       fetchWeather(name).catch((error) => {
-        console.error(`Помилка оновлення ${name}:`, error.message);
+        console.error(`Update error ${name}:`, error.message);
         return { name, error: error.message };
       })
     );
@@ -48,7 +45,7 @@ export function WeatherApp() {
     return results.filter((r) => !r.error);
   }, []);
 
-  // 2. Ініціалізація/Оновлення при зміні cityNames (ВЕЛИКЕ ВИПРАВЛЕННЯ: прибрано updateAllWeather з залежностей)
+  // 2. Updates when changing cityNames
   useEffect(() => {
     let cancelled = false;
     const cleanup = () => {
@@ -80,21 +77,21 @@ export function WeatherApp() {
       })
       .catch((error) => {
         if (!cancelled) {
-          console.error('Помилка масового оновлення:', error);
+          console.error('Multiple update error:', error);
           setLoading(false);
         }
       });
 
     return cleanup;
-  }, [cityNames, updateAllWeather]); // ⬅️ Тут cityNames та updateAllWeather
+  }, [cityNames, updateAllWeather]);
 
-  // 3. Логіка додавання міста
+  // 3. The logic of adding a city
   const addCity = useCallback(
     async (cityName) => {
       const normalizedCityName = cityName.trim().split(',')[0].toLowerCase();
 
       if (cityNames.map((c) => c.toLowerCase()).includes(normalizedCityName)) {
-        alert('Місто вже додано!');
+        alert('The city has already been added!');
         return;
       }
 
@@ -103,13 +100,13 @@ export function WeatherApp() {
         setCityNames((prev) => [...prev, newWeather.name]);
         setWeatherData((prev) => [...prev, newWeather]);
       } catch (error) {
-        alert(`Помилка додавання міста: ${error.message}`);
+        alert(`City adding error: ${error.message}`);
       }
     },
     [cityNames, setCityNames]
   );
 
-  // 4. Логіка видалення міста
+  // 4. The logic of city removal
   const removeCity = useCallback(
     (cityName) => {
       setCityNames((prev) => prev.filter((name) => name !== cityName));
@@ -118,7 +115,7 @@ export function WeatherApp() {
     [setCityNames]
   );
 
-  // 5. Логіка оновлення одного міста
+  // 5. The logic of upgrading a single city
   const refreshCity = useCallback(async (cityName) => {
     try {
       const updatedWeather = await fetchWeather(cityName);
@@ -126,14 +123,12 @@ export function WeatherApp() {
         prev.map((data) => (data.name === cityName ? updatedWeather : data))
       );
     } catch (error) {
-      alert(`Помилка оновлення ${cityName}: ${error.message}`);
+      alert(`Refresh error ${cityName}: ${error.message}`);
     }
   }, []);
 
   if (loading && cityNames.length > 0) {
-    return (
-      <div className={styles.loading}>Завантаження та оновлення даних...</div>
-    );
+    return <div className={styles.loading}>Data loading and updating...</div>;
   }
 
   return (
@@ -147,7 +142,7 @@ export function WeatherApp() {
       <div className={styles.cardGrid}>
         {weatherData.length === 0 && !loading && (
           <p className={styles.emptyListMessage}>
-            Список міст порожній. Додайте місто, щоб розпочати.
+            The list of cities is empty. Add a city to get started.
           </p>
         )}
         {weatherData.map((weather) => (

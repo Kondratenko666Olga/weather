@@ -1,4 +1,3 @@
-// components/CitySearch.jsx
 'use client';
 
 import { useState } from 'react';
