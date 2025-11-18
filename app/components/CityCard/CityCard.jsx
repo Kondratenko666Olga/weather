@@ -1,51 +1,46 @@
-// components/CityCard.jsx
 'use client';
 
 import Image from 'next/image';
 import { useState } from 'react';
 import styles from './CityCard.module.scss';
 
-// ==========================================================
-// ВИПРАВЛЕННЯ: DetailedView визначений тут, щоб бути доступним
-// ==========================================================
 const DetailedView = ({ data, onClose }) => (
   <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
     <div className="bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg animate-fade-in">
       <h3 className="text-3xl font-bold mb-4 text-blue-700">
-        {data.name} (Детальний прогноз)
+        {data.name} (Detailed weather forecast)
       </h3>
       <p className="text-xl mb-4">
         🌡️ {data.fullData.main.temp}°C | {data.description}
       </p>
       <div className="space-y-2 text-gray-700">
         <p>
-          <strong>Відчувається як:</strong> {data.fullData.main.feels_like}°C
+          <strong>Feels like:</strong> {data.fullData.main.feels_like}°C
         </p>
         <p>
-          <strong>Мін. / Макс. темп.:</strong> {data.fullData.main.temp_min}°C /{' '}
+          <strong>Min. / Max. temp.:</strong> {data.fullData.main.temp_min}°C /{' '}
           {data.fullData.main.temp_max}°C
         </p>
         <p>
-          <strong>Вологість:</strong> {data.fullData.main.humidity}%
+          <strong>Humidity:</strong> {data.fullData.main.humidity}%
         </p>
         <p>
-          <strong>Тиск:</strong> {data.fullData.main.pressure} hPa
+          <strong>Pressure:</strong> {data.fullData.main.pressure} hPa
         </p>
         <p>
-          <strong>Швидкість вітру:</strong> {data.fullData.wind.speed} м/с
+          <strong>Wind speed:</strong> {data.fullData.wind.speed} m/s
         </p>
       </div>
-      <p className="mt-6 text-sm text-gray-500">Оновлено: {data.updatedAt}</p>
+      <p className="mt-6 text-sm text-gray-500">Updated: {data.updatedAt}</p>
       <button
         onClick={onClose}
         className="mt-6 px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition"
       >
-        Закрити
+        Close
       </button>
     </div>
   </div>
 );
-// ==========================================================
 
 export function CityCard({ weather, onRefresh, onRemove }) {
   const [showDetail, setShowDetail] = useState(false);
@@ -55,7 +50,6 @@ export function CityCard({ weather, onRefresh, onRemove }) {
   return (
     <>
       <div className={styles.card}>
-        {/* ... вміст картки (без змін) ... */}
         <div onClick={() => setShowDetail(true)} className={styles.cardInfo}>
           <div className={styles.header}>
             <h2 className={styles.title}>{weather.name}</h2>
@@ -71,21 +65,21 @@ export function CityCard({ weather, onRefresh, onRemove }) {
           <p className={styles.temp}>{Math.round(weather.temp)}°C</p>
           <p className={styles.description}>{weather.description}</p>
           <p className={styles.updateTime}>
-            Останнє оновлення: {weather.updatedAt}
+            Latest update: {weather.updatedAt}
           </p>
         </div>
 
         <div className={styles.actions}>
           <button onClick={onRefresh} className={styles.refreshBtn}>
-            🔄 Оновити зараз
+            🔄 Update now
           </button>
           <button onClick={onRemove} className={styles.removeBtn}>
-            🗑️ Видалити
+            🗑️ Delete
           </button>
         </div>
       </div>
 
-      {/* Використання винесеного компонента */}
+      {/* Use of the external component  */}
       {showDetail && (
         <DetailedView data={weather} onClose={() => setShowDetail(false)} />
       )}
