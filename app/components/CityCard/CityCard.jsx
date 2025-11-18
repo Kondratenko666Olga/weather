@@ -1,6 +1,7 @@
 // components/CityCard.jsx
 'use client';
 
+import Image from 'next/image';
 import { useState } from 'react';
 import styles from './CityCard.module.scss';
 
@@ -58,10 +59,13 @@ export function CityCard({ weather, onRefresh, onRemove }) {
         <div onClick={() => setShowDetail(true)} className={styles.cardInfo}>
           <div className={styles.header}>
             <h2 className={styles.title}>{weather.name}</h2>
-            <img
+            <Image
               src={iconUrl}
               alt={weather.description}
               className={styles.icon}
+              width={64}
+              height={64}
+              priority
             />
           </div>
           <p className={styles.temp}>{Math.round(weather.temp)}°C</p>

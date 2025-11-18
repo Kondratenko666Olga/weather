@@ -1,8 +1,8 @@
 import './globals.scss';
 
 export const metadata = {
-  title: 'Next.js Weather SPA | Погода',
-  description: 'Прогноз погоди у вибраних містах',
+  title: 'Your city weather',
+  description: 'Прогноз погоди містах',
   icons: {
     icon: '/favicon.ico', // Шлях відносно папки public/
   },
