@@ -26,10 +26,7 @@ async function fetchWeather(cityName) {
 }
 
 export function WeatherApp() {
-  const [cityNames, setCityNames] = useLocalStorage('weatherCities', [
-    'Kyiv',
-    'Lviv',
-  ]);
+  const [cityNames, setCityNames] = useLocalStorage('weatherCities', []);
   const [weatherData, setWeatherData] = useState([]);
   const [loading, setLoading] = useState(cityNames.length > 0);
 
