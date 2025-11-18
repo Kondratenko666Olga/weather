@@ -28,12 +28,12 @@ export function CitySearch({ onAddCity }) {
         type="text"
         value={cityInput}
         onChange={(e) => setCityInput(e.target.value)}
-        placeholder="Введіть назву міста (наприклад, Одеса)"
+        placeholder="Enter the name of the city"
         className={styles.inputField}
         disabled={isAdding}
       />
       <button type="submit" className={styles.submitButton} disabled={isAdding}>
-        {isAdding ? '⏳ Додавання...' : '➕ Додати місто'}
+        {isAdding ? '⏳ Adding...' : '➕ Add a city'}
       </button>
     </form>
   );
