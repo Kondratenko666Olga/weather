@@ -2,55 +2,45 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { CityCard } from '@/app/components/CityCard/CityCard';
 
+// Mock Next.js Image component
+jest.mock('next/image', () => ({
+  __esModule: true,
+  default: ({ priority: _priority, ...props }) => (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img alt={props.alt || ''} {...props} />
+  ),
+}));
+
 const mockWeatherData = {
   name: 'TestCity',
-  temp: 15.5,
-  description: 'clear sky',
+  temp: 20,
+  description: 'sunny',
   icon: '01d',
   updatedAt: '12:00:00',
   fullData: {
     main: {
-      temp: 15.5,
-      feels_like: 14,
-      temp_min: 10,
-      temp_max: 20,
+      temp: 20,
+      feels_like: 18,
+      temp_min: 15,
+      temp_max: 25,
+      pressure: 1013,
       humidity: 60,
-      pressure: 1012,
     },
-    wind: { speed: 5 },
+    wind: {
+      speed: 5,
+    },
   },
 };
 
+const mockOnRefresh = jest.fn();
+const mockOnRemove = jest.fn();
+
 describe('CityCard', () => {
-  const mockOnRefresh = jest.fn();
-  const mockOnRemove = jest.fn();
-
-  it('should render basic weather data and action buttons', () => {
-    render(
-      <CityCard
-        weather={mockWeatherData}
-        onRefresh={mockOnRefresh}
-        onRemove={mockOnRemove}
-      />
-    );
-
-    // Перевіряємо відображення основних даних
-    expect(
-      screen.getByRole('heading', { name: /TestCity/i })
-    ).toBeInTheDocument();
-    expect(screen.getByText('16°C')).toBeInTheDocument(); // Температура округлюється
-    expect(screen.getByText('clear sky')).toBeInTheDocument();
-
-    // Перевіряємо кнопки
-    expect(
-      screen.getByRole('button', { name: /Оновити зараз/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: /Видалити/i })
-    ).toBeInTheDocument();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should call onRefresh and onRemove when buttons are clicked', () => {
+  it('should render city card with weather data', () => {
     render(
       <CityCard
         weather={mockWeatherData}
@@ -59,10 +49,40 @@ describe('CityCard', () => {
       />
     );
 
-    fireEvent.click(screen.getByRole('button', { name: /Оновити зараз/i }));
-    expect(mockOnRefresh).toHaveBeenCalledTimes(1);
+    expect(screen.getByText('TestCity')).toBeInTheDocument();
+    expect(screen.getByText('20°C')).toBeInTheDocument();
+    expect(screen.getByText('sunny')).toBeInTheDocument();
+  });
 
-    fireEvent.click(screen.getByRole('button', { name: /Видалити/i }));
+  it('should call onRefresh when refresh button is clicked', () => {
+    render(
+      <CityCard
+        weather={mockWeatherData}
+        onRefresh={mockOnRefresh}
+        onRemove={mockOnRemove}
+      />
+    );
+
+    const refreshButton = screen.getByRole('button', {
+      name: /🔄 Update now/i,
+    });
+    fireEvent.click(refreshButton);
+
+    expect(mockOnRefresh).toHaveBeenCalledTimes(1);
+  });
+
+  it('should call onRemove when remove button is clicked', () => {
+    render(
+      <CityCard
+        weather={mockWeatherData}
+        onRefresh={mockOnRefresh}
+        onRemove={mockOnRemove}
+      />
+    );
+
+    const removeButton = screen.getByRole('button', { name: /🗑️ Delete/i });
+    fireEvent.click(removeButton);
+
     expect(mockOnRemove).toHaveBeenCalledTimes(1);
   });
 
@@ -75,23 +95,33 @@ describe('CityCard', () => {
       />
     );
 
-    // 1. Модального вікна немає
     expect(
       screen.queryByText(/Detailed weather forecast/i)
     ).not.toBeInTheDocument();
 
-    // 2. Клікаємо на область картки для відкриття модального вікна
-    fireEvent.click(screen.getByText('TestCity'));
+    // Click on city card (on div with cardInfo)
+    const cardInfo = screen.getByText('TestCity').closest('div');
+    fireEvent.click(cardInfo);
 
-    // 3. Перевіряємо, що модальне вікно з'явилося
-    const modalTitle = screen.getByText('TestCity (Detailed weather forecast)');
-    expect(modalTitle).toBeInTheDocument();
-    expect(screen.getByText(/Humidity: 60%/i)).toBeInTheDocument();
+    // Verify that modal window appeared
+    expect(
+      screen.getByText('TestCity (Detailed weather forecast)')
+    ).toBeInTheDocument();
 
-    // 4. Клікаємо на кнопку закриття
-    fireEvent.click(screen.getByRole('button', { name: /Close/i }));
+    // Check details in modal window
+    expect(screen.getByText(/Humidity:/i)).toBeInTheDocument();
+    expect(screen.getByText(/60/i)).toBeInTheDocument();
+    expect(screen.getByText(/Min. \/ Max. temp.:/i)).toBeInTheDocument();
+    expect(screen.getByText(/15°C/i)).toBeInTheDocument();
+    expect(screen.getByText(/Wind speed:/i)).toBeInTheDocument();
+    expect(screen.getByText(/5 m\/s/i)).toBeInTheDocument();
 
-    // 5. Модального вікна немає
-    expect(modalTitle).not.toBeInTheDocument();
+    // Close modal window
+    const closeButton = screen.getByRole('button', { name: /Close/i });
+    fireEvent.click(closeButton);
+
+    expect(
+      screen.queryByText(/Detailed weather forecast/i)
+    ).not.toBeInTheDocument();
   });
 });
